@@ -1,0 +1,22 @@
+<h1>{{ title }}</h1>
+<p>{{ content }}</p>
+
+{% if user %}
+    <p>こんにちは、{{ user }}さん！</p>
+{% else %}
+    <p>こんにちは、ゲストさん！</p>
+{% endif %}
+
+<ul>
+    {% for item in items %}
+    <li>{{ item }}</li>
+    {% endfor %}
+</ul>
+
+{% extends "base.html" %}
+
+{% block title %}ホームページ{% endblock %}
+
+{% block content %}
+    <p>ようこそ、Flaskアプリへ！</p>
+{% endblock %}
