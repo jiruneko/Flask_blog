@@ -1,4 +1,5 @@
-from flask import Flask, url_for, render_template
+from flask import Flask, request, url_for, render_template
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -22,9 +23,16 @@ def contact():
     return "This is the contact page."
 
 
-@app.route("/submit", methods=["POST"])
+@app.route("/submit", methods=["GET", "POST"])
 def submit():
-    return "Form submitted!"
+    if request.method == "POST":
+        name = request.form["name"]
+        return f"Hello, {name}!"
+    return render_template("submit.html")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
 @app.route("/user/<username>")
@@ -72,6 +80,19 @@ def posts():
 def dashboard():
     user_logged_in = True
     return render_template("dashboard.html", logged_in=user_logged_in)
+
+
+def format_datetime(value, format="%Y/%m/%d"):
+    return value.strftime(format)
+
+
+app.jinja_env.filters["datatime"] = format_datetime
+
+
+@app.route("/time")
+def show_time():
+    now = datetime.now()
+    return render_template("time.html", current_time=now)
 
 
 if __name__ == "__main__":
